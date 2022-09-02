@@ -27,25 +27,43 @@ const robiul = (datas) => {
         div.innerHTML = `
         <div class="row g-0">
         <div class="col-md-4">
-          <img src="${data.thumbnail_url}" class="img-fluid rounded-start" alt="...">
+          <img src="${data.thumbnail_url}" class="img-fluid rounded-start">
         </div>
         <div class="col-md-8">
-          <div class="card-body">
-            <h6 class="card-title">ok${data.title ? data.title : 'no news'}</h6>
-            <p class="card-text">${data.details.slice(0,450)}</p>
-            <div class="d-flex justify-content-between pt-5">
-                <div><img src="${data.author.img}" class="rounded-circle iimage">${data.author.name ? data.author.name : 'no name'}</div>
-                <div>go</div>
-                <div onclick="details(${data._id})">go</div>
+            <div class="card-body">
+                <h6 class="card-title">ok${data.title ? data.title : 'no news'}</h6>
+                <p class="card-text">${data.details.slice(0,450)}</p>
+                <div class="d-flex justify-content-between pt-5">
+                    <div><img src="${data.author.img}" class="rounded-circle iimage">${data.author.name ? data.author.name : 'no name'}</div>
+                    <div>go</div>
+                    <div>
+                        <button onclick="details('${data._id}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Detail
+                        </button>
+                    </div>
+                </div>
+                </div>
             </div>
-          </div>
-        </div>
         </div>
         `;
-        titleMenu.appendChild(div)
-
-        console.log(data._id)
-        // console.log(data._id)
+        titleMenu.appendChild(div) ;
     });
+
+}
+const details = (id) => {
+    fetch(`https://openapi.programming-hero.com/api/news/${id}`)
+    .then(res => res.json())
+    .then(data => modalMenu(data.data[0]))
+}
+const modalMenu = (datas) => {
+    const modalTitle = document.getElementById('exampleModalLabel')
+    const modalDate = document.getElementById('exampleModalDate')
+    const modalWriter = document.getElementById('exampleModalWriter')
+
+    modalTitle.innerHTML = `${datas.title}`
+    modalDate.innerHTML = `publish: ${datas.author.published_date}`
+    modalWriter.innerHTML = `Author: ${datas.author.name ? datas.author.name : 'name is not found'}`
+
+    console.log(datas)
 }
 loadCatagory('')
