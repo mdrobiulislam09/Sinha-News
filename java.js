@@ -27,13 +27,17 @@ const riad = (category_id) => {
     .then(data => robiul(data.data))
 }
 const robiul = (datas) => {
-    const titleMenu = document.getElementById('title-menu')
+// <!-- // show defalt by view
+    const views = datas ;
+    views.sort(function(a, b){
+        return b.total_view - a.total_view
+    });
+
     const counterMenu = document.getElementById('news-counter')
     counterMenu.innerHTML =`
-        news found: ${datas.length > 0 ? datas.length : 'no news found'}
+    ${datas.length > 0 ? datas.length : 'No'} news found
     `;
-    console.log(datas.length)
-    
+    const titleMenu = document.getElementById('title-menu')
     titleMenu.innerHTML = ``
     datas.forEach(data => {
 
