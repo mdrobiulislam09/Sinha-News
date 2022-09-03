@@ -1,7 +1,12 @@
-const loadCatagory = () => {
-    fetch('https://openapi.programming-hero.com/api/news/categories')
-    .then(res => res.json())
-    .then(data => newsCatagory(data.data.news_category))
+const loadCatagory = async () => {
+    try{
+        const res = await fetch('https://openapi.programming-hero.com/api/news/categories');
+        const data = await res.json();
+        newsCatagory(data.data.news_category);
+    }
+    catch (error){
+        console.log(error)
+    }
 }
 const newsCatagory = (catagories) => {
     const newsCatagory = document.getElementById('news-catagory')
@@ -14,6 +19,7 @@ const newsCatagory = (catagories) => {
         
     });
 }
+
 const riad = (category_id) => {
     toggleSpinner(true)
     fetch(` https://openapi.programming-hero.com/api/news/category/${category_id}`)
@@ -21,9 +27,15 @@ const riad = (category_id) => {
     .then(data => robiul(data.data))
 }
 const robiul = (datas) => {
+    // vvview
+        // const views = data.total_view ? data.total_view : 0 ;
+        // views.sort(function(a, b){return a - b});
+        // console.log(datas)
+
     const titleMenu = document.getElementById('title-menu')
     titleMenu.innerHTML = ``
     datas.forEach(data => {
+        
         const div = document.createElement('div')
         div.classList.add("card", "mb-3")
         div.innerHTML = `
@@ -36,7 +48,7 @@ const robiul = (datas) => {
                 <h6 class="card-title">ok${data.title ? data.title : 'no news'}</h6>
                 <p class="card-text">${data.details.slice(0,450)}...</p>
                 <div class="d-flex justify-content-between pt-5">
-                    <div><img src="${data.author.img}" class="rounded-circle iimage">${data.author.name ? data.author.name : 'no name'}</div>
+                    <div class="d-none d-sm-block"><img src="${data.author.img}" class="rounded-circle iimage">${data.author.name ? data.author.name : 'no name'}</div>
                     <div class="pt-2">view: ${data.total_view ? data.total_view : 'Do not Count'}</div>
                     <div>
                         <button onclick="details('${data._id}')" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
