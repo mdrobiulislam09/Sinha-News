@@ -13,20 +13,21 @@ const newsCatagory = (catagories) => {
     catagories.forEach(catagory => {
         const div = document.createElement('div')
         div.innerHTML =`
-            <p onclick="riad('${catagory.category_id}')">${catagory.category_name}</p>
+            <p onclick="newsByCatagory('${catagory.category_id}')">${catagory.category_name}</p>
         `;
         newsCatagory.appendChild(div);
         
     });
 }
 
-const riad = (category_id) => {
+const newsByCatagory = (category_id) => {
     toggleSpinner(true)
     fetch(` https://openapi.programming-hero.com/api/news/category/${category_id}`)
     .then(res => res.json())
-    .then(data => robiul(data.data))
+    .then(data => catagory(data.data))
+    .catch(error => console.log(error))
 }
-const robiul = (datas) => {
+const catagory = (datas) => {
 // <!-- // show defalt by view
     const views = datas ;
     views.sort(function(a, b){
@@ -35,7 +36,7 @@ const robiul = (datas) => {
 
     const counterMenu = document.getElementById('news-counter')
     counterMenu.innerHTML =`
-    ${datas.length > 0 ? datas.length : 'No'} news found
+    ${datas.length > 0 ? datas.length : 'No'} news founded
     `;
     const titleMenu = document.getElementById('title-menu')
     titleMenu.innerHTML = ``
@@ -76,6 +77,7 @@ const details = (id) => {
     fetch(`https://openapi.programming-hero.com/api/news/${id}`)
     .then(res => res.json())
     .then(data => modalMenu(data.data[0]))
+    .catch(error => console.log(error))
 }
 const modalMenu = (datas) => {
     const modalTitle = document.getElementById('exampleModalLabel')
@@ -107,5 +109,5 @@ const toggleSpinner = isSpning => {
         spinnerSection.classList.add('d-none')
     }
 }
-riad('08')
+newsByCatagory('08')
 loadCatagory() ;
