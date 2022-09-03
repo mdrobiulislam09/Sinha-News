@@ -27,15 +27,16 @@ const riad = (category_id) => {
     .then(data => robiul(data.data))
 }
 const robiul = (datas) => {
-    // vvview
-        // const views = data.total_view ? data.total_view : 0 ;
-        // views.sort(function(a, b){return a - b});
-        // console.log(datas)
-
     const titleMenu = document.getElementById('title-menu')
+    const counterMenu = document.getElementById('news-counter')
+    counterMenu.innerHTML =`
+        news found: ${datas.length > 0 ? datas.length : 'no news found'}
+    `;
+    console.log(datas.length)
+    
     titleMenu.innerHTML = ``
     datas.forEach(data => {
-        
+
         const div = document.createElement('div')
         div.classList.add("card", "mb-3")
         div.innerHTML = `
@@ -46,7 +47,7 @@ const robiul = (datas) => {
         <div class="col-md-8">
             <div class="card-body">
                 <h6 class="card-title">ok${data.title ? data.title : 'no news'}</h6>
-                <p class="card-text">${data.details.slice(0,450)}...</p>
+                <p class="card-text">${data.details.length > 500 ? data.details.slice(0,500) + '...': data.details}</p>
                 <div class="d-flex justify-content-between pt-5">
                     <div class="d-none d-sm-block">
                     <img src="${data.author.img}" class="rounded-circle iimage me-2">
@@ -91,7 +92,7 @@ const modalMenu = (datas) => {
     `;
 
     // console.log(datas.rating.badge)
-    console.log(datas)
+    // console.log(datas)
 }
 const toggleSpinner = isSpning => {
     const spinnerSection = document.getElementById('spinner')
