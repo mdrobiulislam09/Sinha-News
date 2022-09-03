@@ -10,10 +10,12 @@ const newsCatagory = (catagories) => {
         div.innerHTML =`
             <p onclick="riad('${catagory.category_id}')">${catagory.category_name}</p>
         `;
-        newsCatagory.appendChild(div)
+        newsCatagory.appendChild(div);
+        
     });
 }
 const riad = (category_id) => {
+    toggleSpinner(true)
     fetch(` https://openapi.programming-hero.com/api/news/category/${category_id}`)
     .then(res => res.json())
     .then(data => robiul(data.data))
@@ -32,13 +34,13 @@ const robiul = (datas) => {
         <div class="col-md-8">
             <div class="card-body">
                 <h6 class="card-title">ok${data.title ? data.title : 'no news'}</h6>
-                <p class="card-text">${data.details.slice(0,450)}</p>
+                <p class="card-text">${data.details.slice(0,450)}...</p>
                 <div class="d-flex justify-content-between pt-5">
                     <div><img src="${data.author.img}" class="rounded-circle iimage">${data.author.name ? data.author.name : 'no name'}</div>
-                    <div>go</div>
+                    <div class="pt-2">view: ${data.total_view ? data.total_view : 'Do not Count'}</div>
                     <div>
-                        <button onclick="details('${data._id}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Detail
+                        <button onclick="details('${data._id}')" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Details
                         </button>
                     </div>
                 </div>
@@ -48,7 +50,7 @@ const robiul = (datas) => {
         `;
         titleMenu.appendChild(div) ;
     });
-
+    toggleSpinner(false)
 }
 const details = (id) => {
     fetch(`https://openapi.programming-hero.com/api/news/${id}`)
@@ -59,11 +61,24 @@ const modalMenu = (datas) => {
     const modalTitle = document.getElementById('exampleModalLabel')
     const modalDate = document.getElementById('exampleModalDate')
     const modalWriter = document.getElementById('exampleModalWriter')
+    const modalREview = document.getElementById('exampleReview')
 
     modalTitle.innerHTML = `${datas.title}`
     modalDate.innerHTML = `publish: ${datas.author.published_date}`
-    modalWriter.innerHTML = `Author: ${datas.author.name ? datas.author.name : 'name is not found'}`
+    modalWriter.innerHTML = `Author: ${datas.author.name ? datas.author.name : 'No data'}`
+    modalREview.innerHTML = `Rating: ${datas.rating.number ? datas.rating.number : 'No data'}`
 
-    console.log(datas)
+    // console.log(datas.rating.badge)
+    // console.log(datas)
 }
-loadCatagory('')
+const toggleSpinner = isSpning => {
+    const spinnerSection = document.getElementById('spinner')
+    if(isSpning) {
+        spinnerSection.classList.remove('d-none')
+    }
+    else{
+        spinnerSection.classList.add('d-none')
+    }
+}
+riad('08')
+loadCatagory() ;
