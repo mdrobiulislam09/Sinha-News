@@ -48,7 +48,10 @@ const robiul = (datas) => {
                 <h6 class="card-title">ok${data.title ? data.title : 'no news'}</h6>
                 <p class="card-text">${data.details.slice(0,450)}...</p>
                 <div class="d-flex justify-content-between pt-5">
-                    <div class="d-none d-sm-block"><img src="${data.author.img}" class="rounded-circle iimage">${data.author.name ? data.author.name : 'no name'}</div>
+                    <div class="d-none d-sm-block">
+                    <img src="${data.author.img}" class="rounded-circle iimage me-2">
+                    ${data.author.name ? data.author.name : 'no name'}
+                    </div>
                     <div class="pt-2">view: ${data.total_view ? data.total_view : 'Do not Count'}</div>
                     <div>
                         <button onclick="details('${data._id}')" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -73,15 +76,22 @@ const modalMenu = (datas) => {
     const modalTitle = document.getElementById('exampleModalLabel')
     const modalDate = document.getElementById('exampleModalDate')
     const modalWriter = document.getElementById('exampleModalWriter')
-    const modalREview = document.getElementById('exampleReview')
+    const modalREview = document.getElementById('exampleReview') 
+    const modalphoto = document.getElementById('photo') 
 
-    modalTitle.innerHTML = `${datas.title}`
-    modalDate.innerHTML = `publish: ${datas.author.published_date}`
-    modalWriter.innerHTML = `Author: ${datas.author.name ? datas.author.name : 'No data'}`
+    modalTitle.innerHTML = `${datas.title}`;
+    modalDate.innerHTML = `publish: ${datas.author.published_date}`;
+    modalWriter.innerHTML = `
+        Author: <img src="${datas.author.img}" class="iimage me-2">
+        ${datas.author.name ? datas.author.name : 'No data'}
+    `;
     modalREview.innerHTML = `Rating: ${datas.rating.number ? datas.rating.number : 'No data'}`
+    modalphoto.innerHTML = `
+        <img src="${datas.image_url}" class="w-100">
+    `;
 
     // console.log(datas.rating.badge)
-    // console.log(datas)
+    console.log(datas)
 }
 const toggleSpinner = isSpning => {
     const spinnerSection = document.getElementById('spinner')
